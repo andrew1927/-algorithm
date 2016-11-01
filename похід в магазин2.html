@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<h1>Алгоритм походу в магазин</h1>	
+	<ol id="algorithm">
+		<li>Вийшов з дому.</li>
+		<li>Дійшов до вулиці Шептицького.</li>
+		<p id="paragraph">Якою вулицею піти?</p>	
+		<button id="one" >вул. Героїв Базару</button>
+		<button id="two">вул. Сабурова</button>
+	</ol>
+	<script>	
+		var elBtnOne = document.getElementById("one"), // кнопка вул. Героїв Базару
+		    elBtnTwo = document.getElementById("two"), // кнопка вул. Сабурова
+		    elList = document.getElementById("algorithm"), // нумерований список
+			elP = document.getElementById("paragraph"), // абзац з питанням Якою вулицею піти?
+		    elBtnYes = document.createElement("button"), // створюємо кнопку ТАК
+			elBtnNo = document.createElement("button"), // створюємо кнопку НІ
+			elBtnYes1 = document.createElement("button"), // створюємо кнопку ТАК наступного питання
+			elBtnNo1 = document.createElement("button"), // створюємо кнопку НІ наступного питання
+			elBtnD = document.createElement("button"), // створюємо кнопку DANGER
+			elBtnChoice1 = document.createElement("button"),   
+			elBtnChoice2 = document.createElement("button"), 
+			newLi3 = document.createElement("li"), // створюємо пункти списка
+			newLi4 = document.createElement("li"), 
+			newLi5 = document.createElement("li"), 
+			newLi6 = document.createElement("li"), 
+			elParagraph = document.createElement("p"), // створюємо абзаци для запитання
+			elParagraph2 = document.createElement("p"),
+			elParagraph3 = document.createElement("p"),
+			elParagraph4 = document.createElement("p"),
+			elParagraph5 = document.createElement("p");
+
+
+			function remove(elP,elBtnOne,elBtnTwo){ // ф-я видалення запитання і кнопок вибору
+				elList.removeChild(elP);
+				elList.removeChild(elBtnOne);
+				elList.removeChild(elBtnTwo);
+			};
+
+			function getRandomInt(min, max) { // ф-я випадкового цілого
+				return Math.floor(Math.random() * (max - min)) + min;
+			};
+		      
+		    function clickMe(){ // ф-я вибору вулиці
+				if(this.innerHTML == elBtnOne.innerHTML){
+					elList.appendChild(newLi3);
+					newLi3.innerHTML = "Іду по" + " " + elBtnOne.innerHTML;
+					
+					elList.appendChild(elParagraph3); // add tag "p" for question 
+					elList.appendChild(elBtnD);// add button "Danger"
+					elBtnD.innerHTML = "DANGER";
+					elParagraph3.innerHTML = "Перевір на скільки відсотків безпечна вулиця?";
+
+					elBtnD.addEventListener("click", function(){ // event click on button "DANGER" 
+						newLi4.innerHTML = getRandomInt(0, 101); 
+						if (newLi4.innerHTML >= 50) {
+							elList.appendChild(newLi4);
+							newLi4.innerHTML = newLi4.innerHTML + "% безпеки:" + " " + "Don't worry, be happy!";
+						} else{
+							elList.appendChild(newLi4);
+							newLi4.innerHTML = newLi4.innerHTML + "% безпеки:" + " " + "Упс.. тебе зупинив гопнік!";
+							elList.appendChild(elParagraph5);
+							elParagraph5.innerHTML = "Яке рішення приймеш ти?";
+							elList.appendChild(elBtnChoice1); // button
+							elBtnChoice1.innerHTML = "Віддаси гроші і підеш додому без хліба";
+							elList.appendChild(elBtnChoice2); // button
+							elBtnChoice2.innerHTML = "Спробуєш йому навішати?";
+
+							elBtnChoice1.addEventListener("click", function(){ //event click on button "Віддаси гроші і підеш додому без хліба"
+								elList.appendChild(newLi5);
+								newLi5.innerHTML = "Ти віддав гроші і повернувся додому без хліба";
+								remove(elParagraph5,elBtnChoice1,elBtnChoice2);
+							});
+							elBtnChoice2.addEventListener("click", function(){
+								newLi5.innerHTML = getRandomInt(0, 101);
+								if(newLi5.innerHTML >= 50){
+									elList.appendChild(newLi5);
+									newLi5.innerHTML = newLi5.innerHTML + "%:" + " ти йому навішав і спокійно ідеш далі."; 
+								} else{
+									elList.appendChild(newLi5);
+									newLi5.innerHTML = newLi5.innerHTML + "%:" + " на жаль, тобі наваляли і ти повертаєшся додому ні з чим."; 
+								}
+								remove(elParagraph5,elBtnChoice1,elBtnChoice2);
+							})
+						}
+							remove(elParagraph3, elBtnD);
+					});
+				} else{
+					elList.appendChild(newLi3);
+					newLi3.innerHTML = "Іду по" + " " + elBtnTwo.innerHTML;
+					elList.appendChild(newLi4);
+					newLi4.innerHTML = "Бачу магазин навпроти лікарні";
+					elList.appendChild(elParagraph);
+					elParagraph.innerHTML = "Зайти?";
+					elList.appendChild(elBtnYes);
+					elBtnYes.innerHTML = "Так";
+					elList.appendChild(elBtnNo);
+					elBtnNo.innerHTML = "Ні";
+
+				}
+					remove(elP,elBtnOne,elBtnTwo);
+
+					elBtnYes.addEventListener("click", clickChoice);
+					elBtnNo.addEventListener("click", clickChoice);
+			} 
+
+			 function clickChoice(){ // ф-я вибору місця де будемо купувати хліб
+		    	if(this.innerHTML == "Так"){
+		    		elList.appendChild(newLi5);
+		    		newLi5.innerHTML = "Купив, іду назад";  
+		    		remove(elParagraph, elBtnYes, elBtnNo);
+		    	} else{
+		    		elList.appendChild(newLi5);
+		    		newLi5.innerHTML = "Іду далі до зупинки";
+		    		elList.appendChild(newLi6);
+		    		newLi6.innerHTML = "Бачу магазин на зупинці";
+		    		elList.appendChild(elParagraph2);
+		    		elParagraph2.innerHTML = "Зайти?";
+		    		elList.appendChild(elBtnYes1);
+					elBtnYes1.innerHTML = "Так";
+					elList.appendChild(elBtnNo1);
+					elBtnNo1.innerHTML = "Ні";
+
+		    		remove(elParagraph,elBtnYes,elBtnNo);
+		    	}
+		    }
+		    
+			elBtnOne.addEventListener("click", clickMe);
+			elBtnTwo.addEventListener('click', clickMe);
+	</script>
+</body>
+</html>
